@@ -121,7 +121,7 @@ public class HelloController {
             if(rain<0.1){l1.setText(" Rain: Clear");
                 Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
                 g1.setImage(image);}else{if(rain<1){l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-                g1.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.jpg");
+                g1.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
                 g1.setImage(image);}}
             //out.setText("id "+id);
             //in.setText("   "+ new Random());
@@ -184,7 +184,7 @@ public class HelloController {
         updatehourdata();
         hour=(hour==23?0:hour+1);
         time.setText(String.valueOf(hour));
-        time.setTextFill(Color.BLUEVIOLET);
+        //time.setTextFill(Color.BLUEVIOLET);
         int rain=hourweather[hour][0];int wind=hourweather[hour][1];int vis=hourweather[hour][2];
         if(rain==0){l1.setText(" Rain: Clear");
             Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");g1.setImage(image);}else{
@@ -207,7 +207,7 @@ public class HelloController {
         updatehourdata();
         hour=(hour==0?23:hour-1);
         time.setText(String.valueOf(hour));
-        time.setTextFill(Color.BLUEVIOLET);
+        //time.setTextFill(Color.BLUEVIOLET);
         int rain=hourweather[hour][0];int wind=hourweather[hour][1];int vis=hourweather[hour][2];
         if(rain==0){l1.setText(" Rain: Clear");
             Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");g1.setImage(image);}else{
@@ -245,7 +245,7 @@ public class HelloController {
         if(!israin||rain<0.1){l1.setText("Rain: Clear");
             Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
             g1.setImage(image);}else{if(rain<1){l1.setText("Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-            g1.setImage(image);}else{l1.setText("Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.jpg");
+            g1.setImage(image);}else{l1.setText("Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
             g1.setImage(image);}}
 
         in.setText("   "+ new Random());
