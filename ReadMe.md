@@ -1,0 +1,1 @@
+Please change the directory to image in "initialize()", "current()" in HelloController.
