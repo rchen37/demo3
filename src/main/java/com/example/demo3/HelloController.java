@@ -24,9 +24,10 @@ import java.util.List;
 
 public class HelloController {
 
-    private int hour=0;
-    private int currenthour=0;
-
+    private static int hour=0;
+    private static int currenthour=0;
+    private static int[][] hourweather;// update by calling updatehourdata(), int[24][3], int[3][0] is rain at 3am, int[3][1] is wind,int[3][2] is vis
+                                // if 1 then unsafe/rain, if 0 then safe/no rain.
 
     @FXML
     private Label l1;
@@ -34,6 +35,14 @@ public class HelloController {
     private Label l2;
     @FXML
     private Label l3;
+    @FXML
+    private Label l11;
+    @FXML
+    private Label l21;
+    @FXML
+    private Label l31;
+    @FXML
+    private Label time;
     @FXML
     private ImageView g1;
     @FXML
@@ -53,6 +62,9 @@ public class HelloController {
 
 
     public static Map<String, Object> getMap() throws IOException {
+
+        //"https://api.openweathermap.org/data/2.5/onecall?lat=52.20&lon=0.11&exclude=hourly&appid=8d0947155c9fc52d66c72043321d4920"
+
         URL url=new URL("https://api.openweathermap.org/data/2.5/onecall?lat=52.20&lon=0.11&exclude=hourly&appid=8d0947155c9fc52d66c72043321d4920");
         InputStream inputStream = url.openConnection().getInputStream();
         HttpURLConnection huc=(HttpURLConnection)url.openConnection();
@@ -88,8 +100,17 @@ public class HelloController {
 
     @FXML
     private void current(){
-        try{
 
+        try{
+            time.setText(String.valueOf(new Date().getHours()));
+            c1.setVisible(true);
+            c2.setVisible(true);
+            c3.setVisible(true);
+            l11.setVisible(true);
+            l21.setVisible(true);
+            l31.setVisible(true);
+            currenthour=new Date().getHours();
+            hour=currenthour;
             map=getMap();
             int vis=(Integer) ((Map)(map.get("current"))).get("visibility");
             double wind=Math.ceil((Double) ((Map)(map.get("current"))).get("wind_speed"));
@@ -97,8 +118,8 @@ public class HelloController {
             int id= (int) weather.get(0).get("id");
             List<Map> min= (List<Map>) (map.get("minutely"));
             double rain=Double.parseDouble(min.get(0).get("precipitation").toString()) ;
-            if(rain<0.1){l1.setText(" Rain: Clear"+rain);
-                Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+            if(rain<0.1){l1.setText(" Rain: Clear");
+                Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
                 g1.setImage(image);}else{if(rain<1){l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
                 g1.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.jpg");
                 g1.setImage(image);}}
@@ -125,11 +146,79 @@ public class HelloController {
         }
 
     }
-    @FXML
-    private void tomorrow(){
+
+
+    private static void updatehourdata(){
+
+        Map map=getMap2();
+        Map forecast= (Map) map.get("forecast");
+        List<Map> forecastday=(List<Map>) (forecast.get("forecastday"));
+        Map toHour=forecastday.get(0);
+        List<Map> hours=(List)toHour.get("hour");
+        hourweather=new int[24][3];
+        int i=0;
+        for(Map one:hours){
+            int rain= (int) one.get("will_it_rain");
+
+            double vis1= (double) one.get("vis_km");
+            double wind1=(double) one.get("wind_kph");
+
+            System.out.println("wind speed is "+wind1);
+            System.out.println("visibility is "+vis1);
+
+            int vis=vis1>5?0:1;
+            int wind=wind1<20?0:1;
+            hourweather[i][0]=rain; hourweather[i][1]=wind;hourweather[i][2]=vis;
+        }
 
     }
 
+    @FXML
+    private void nexthour(){
+        l11.setVisible(false);
+        l21.setVisible(false);
+        l31.setVisible(false);
+        c1.setVisible(false);
+        c2.setVisible(false);
+        c3.setVisible(false);
+        updatehourdata();
+        hour=(hour==23?0:hour+1);
+        time.setText(String.valueOf(hour));
+        time.setTextFill(Color.BLUEVIOLET);
+        int rain=hourweather[hour][0];int wind=hourweather[hour][1];int vis=hourweather[hour][2];
+        if(rain==0){l1.setText(" Rain: Clear");
+            Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");g1.setImage(image);}else{
+            l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+            g1.setImage(image);
+
+        }
+        if(wind==0){l2.setText(" Wind: "+"Safe");
+            }else{l2.setText(" Wind: "+"Unsafe");}
+        if(vis==0){l3.setText(" Vis:  "+"Safe");}else{l3.setText(" Vis:  "+"Unsafe");}
+    }
+    @FXML
+    private void previoushour(){
+        l11.setVisible(false);
+        l21.setVisible(false);
+        l31.setVisible(false);
+        c1.setVisible(false);
+        c2.setVisible(false);
+        c3.setVisible(false);
+        updatehourdata();
+        hour=(hour==0?23:hour-1);
+        time.setText(String.valueOf(hour));
+        time.setTextFill(Color.BLUEVIOLET);
+        int rain=hourweather[hour][0];int wind=hourweather[hour][1];int vis=hourweather[hour][2];
+        if(rain==0){l1.setText(" Rain: Clear");
+            Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");g1.setImage(image);}else{
+            l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+            g1.setImage(image);
+
+        }
+        if(wind==0){l2.setText(" Wind: "+"Safe");
+        }else{l2.setText(" Wind: "+"Unsafe");}
+        if(vis==0){l3.setText(" Vis:  "+"Safe");}else{l3.setText(" Vis:  "+"Unsafe");}
+    }
 
     @FXML
     private void changetime(){  //not used
