@@ -98,9 +98,10 @@ public class HelloController {
             List<Map> min= (List<Map>) (map.get("minutely"));
             double rain=Double.parseDouble(min.get(0).get("precipitation").toString()) ;
             if(rain<0.1){l1.setText(" Rain: Clear"+rain);
-                Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-                g1.setImage(image);}else{if(rain<1){l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-                g1.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.jpg");
+                Image image=new Image("file:/src/main/resources/images/2.jpg");
+                //Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+                g1.setImage(image);}else{if(rain<1){l1.setText(" Rain: Mild");Image image=new Image("file:/src/main/resources/images/2.jpg");
+                g1.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image("file:/src/main/resources/images/3.jpg");
                 g1.setImage(image);}}
             //out.setText("id "+id);
             //in.setText("   "+ new Random());
@@ -154,9 +155,9 @@ public class HelloController {
             israin=false;
         }
         if(!israin||rain<0.1){l1.setText("Rain: Clear");
-            Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
-            g1.setImage(image);}else{if(rain<1){l1.setText("Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-            g1.setImage(image);}else{l1.setText("Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.jpg");
+            Image image=new Image("file:/src/main/resources/images/1.jpg");
+            g1.setImage(image);}else{if(rain<1){l1.setText("Rain: Mild");Image image=new Image("file:/src/main/resources/images/2.jpg");
+            g1.setImage(image);}else{l1.setText("Rain: Downpour");Image image=new Image("file:/src/main/resources/images/3.jpg");
             g1.setImage(image);}}
 
         in.setText("   "+ new Random());
@@ -167,7 +168,7 @@ public class HelloController {
 
     @FXML
     private void initialize() {
-        Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+        Image image=new Image("file:/src/main/resources/images/1.jpg");
         g1.setImage(image);
         current();
 
