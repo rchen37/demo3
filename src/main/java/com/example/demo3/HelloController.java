@@ -1,6 +1,7 @@
 package com.example.demo3;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -30,11 +31,25 @@ public class HelloController {
     private static int currenthour=0;
     private static int[][] hourweather;// update by calling updatehourdata(), int[24][3], int[3][0] is rain at 3am, int[3][1] is wind,int[3][2] is vis
                                 // if 1 then unsafe/rain, if 0 then safe/no rain.
-    private static double[][] hourweather1;
-
+    private static double[][] hourweather1=new double[24][3];
+    private static Object[][] newdata=new Object[5][24];
     private static boolean picture=false;
 
     private static Rectangle[][] Rectangle=new Rectangle[3][15];
+    public Button back;
+
+    @FXML
+    private Label temp;
+    @FXML
+    private Label text;
+    @FXML
+    private Label wind_mph;
+    @FXML
+    private Label humid;
+    @FXML
+    private Label precip;
+
+
 
     @FXML
     private Rectangle x11;
@@ -154,6 +169,8 @@ public class HelloController {
     @FXML
     private ImageView g1;
     @FXML
+    private ImageView g2;
+    @FXML
     private Circle c1;
     @FXML
     private Circle c2;
@@ -212,7 +229,7 @@ public class HelloController {
         try{
             selected.setText("current");
 
-            time.setText(String.valueOf(new Date().getHours()));
+            time.setText(String.valueOf(new Date().getHours())+"h");
             c1.setVisible(true);
             c2.setVisible(true);
             c3.setVisible(true);
@@ -228,13 +245,13 @@ public class HelloController {
             java.util.List<Map<Object,Object>> weather = (List<Map<Object, Object>>) ((Map)(map.get("current"))).get("weather");
             int id= (int) weather.get(0).get("id");
             List<Map> min= (List<Map>) (map.get("minutely"));
-            double rain=Double.parseDouble(min.get(0).get("precipitation").toString()) ;
+            double rain=hourweather1[currenthour][0];//Double.parseDouble(min.get(0).get("precipitation").toString()) ;
             if(rain<0.1){l1.setText(" Rain: Clear");
                 //Image image1=new Image(String.valueOf(getClass().getResource("images\\1.jpg")));
                 Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
-                g1.setImage(image);}else{if(rain<1){l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-                g1.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
-                g1.setImage(image);}}
+                g1.setImage(image);g2.setImage(image);}else{if(rain<1){l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+                g1.setImage(image);g2.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
+                g1.setImage(image);g2.setImage(image);}}
             //out.setText("id "+id);
             //in.setText("   "+ new Random());
             String wind1=(wind>20?"Unsafe":"Safe");
@@ -254,6 +271,15 @@ public class HelloController {
             if(ten<0.1){c2.setFill(Color.LIGHTGREEN);}else{if(ten<1)c2.setFill(Color.YELLOW);else{c2.setFill(Color.RED);}}
             if(thirty<0.1){c3.setFill(Color.LIGHTGREEN);}else{if(thirty<1)c3.setFill(Color.YELLOW);else{c3.setFill(Color.RED);}}
 
+            Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+            //g2.setImage(image);
+            //g2.setVisible(false);
+
+            temp.setText("Temp: "+(String) String.valueOf(newdata[0][hour]));
+            text.setText((String) (newdata[1][hour]));
+            wind_mph.setText("Wind: "+(String) String.valueOf(newdata[2][hour])+" mph");
+            humid.setText("Humid: "+(String) String.valueOf(newdata[3][hour])+"%");
+            precip.setText("Precip: "+(String) String.valueOf(newdata[4][hour])+"mm");
 
         }catch (IOException e){
 
@@ -273,19 +299,34 @@ public class HelloController {
         hourweather1=new double[24][3];
         int i=0;
         for(Map one:hours){
-            int rain= (int) one.get("will_it_rain");
+            double rain1= (double) one.get("precip_mm");
 
             double vis1= (double) one.get("vis_km");
             double wind1=(double) one.get("wind_kph");
+            hourweather1[i][0]=rain1;
             hourweather1[i][1]=wind1; hourweather1[i][2]=vis1;
 
             System.out.println("wind speed is "+wind1);
             System.out.println("visibility is "+vis1);
-
-            int vis=vis1>9.9?0:1;
+            int rain=(rain1<0.1?0:(rain1<5?1:2));
+            int vis=vis1>5?0:1;
             int wind=wind1<18?0:1;
             hourweather[i][0]=rain; hourweather[i][1]=wind;hourweather[i][2]=vis;
+
+
+            Object tem=one.get("temp_c");
+            Map condition=(Map)one.get("condition");
+            Object tex=condition.get("text");
+            Object win=one.get("wind_mph");
+            Object hum=one.get("humidity");
+            Object pre=one.get("precip_mm");
+            newdata[0][i]=tem; newdata[1][i]=tex; newdata[2][i]=win; newdata[3][i]=hum; newdata[4][i]=pre;
+
+
             i++;
+
+
+
         }
 
     }
@@ -301,7 +342,7 @@ public class HelloController {
         c3.setVisible(false);
         updatehourdata();
         hour=(hour==23?0:hour+1);
-        time.setText(String.valueOf(hour));
+        time.setText(String.valueOf(hour)+"h");
         //time.setTextFill(Color.BLUEVIOLET);
         int rain=hourweather[hour][0];int wind=hourweather[hour][1];int vis=hourweather[hour][2];
         if(rain==0){l1.setText(" Rain: Clear");
@@ -312,11 +353,30 @@ public class HelloController {
                 image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\4.jpg");
             }
             picture=!picture;
-            g1.setImage(image);}else{
-            l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-            g1.setImage(image);
+            g1.setImage(image);g2.setImage(image);}else {
 
+            if (rain == 1) {
+                l1.setText(" Rain: Mild");
+                Image image = new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+                g1.setImage(image);
+                g2.setImage(image);
+                ;
+            } else {
+                l1.setText(" Rain: Heavy");
+                Image image = new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
+                g1.setImage(image);
+                g2.setImage(image);
+            }
         }
+            temp.setText("Temp: "+(String) String.valueOf(newdata[0][hour]));
+            text.setText((String) (newdata[1][hour]));
+            wind_mph.setText("Wind: "+(String) String.valueOf(newdata[2][hour])+" mph");
+            humid.setText("Humid: "+(String) String.valueOf(newdata[3][hour])+"%");
+            precip.setText("Precip: "+(String) String.valueOf(newdata[4][hour])+"mm");
+
+
+
+
         vis11.setText(String.valueOf(hourweather1[hour][2])+" km");
         wind11.setText(String.valueOf(hourweather1[hour][1])+" kph");
         if(wind==0){l2.setText(" Wind: "+"Safe");
@@ -334,7 +394,8 @@ public class HelloController {
         c3.setVisible(false);
         updatehourdata();
         hour=(hour==0?23:hour-1);
-        time.setText(String.valueOf(hour));
+
+        time.setText(String.valueOf(hour)+"h");
         //time.setTextFill(Color.BLUEVIOLET);
         int rain=hourweather[hour][0];int wind=hourweather[hour][1];int vis=hourweather[hour][2];
         if(rain==0){l1.setText(" Rain: Clear");
@@ -345,11 +406,17 @@ public class HelloController {
                 image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\4.jpg");
             }
             picture=!picture;
+            g1.setImage(image);g2.setImage(image);}else{
+
+            if(rain==1){
+                l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+                g1.setImage(image);g2.setImage(image);
+            }else{
+                l1.setText(" Rain: Heavy");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
+                g1.setImage(image);g2.setImage(image);
+            }
 
 
-            g1.setImage(image);}else{
-            l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-            g1.setImage(image);
 
         }
         vis11.setText(String.valueOf(hourweather1[hour][2])+" km");
@@ -357,6 +424,11 @@ public class HelloController {
         if(wind==0){l2.setText(" Wind: "+"Safe");
         }else{l2.setText(" Wind: "+"Unsafe");}
         if(vis==0){l3.setText(" Vis:  "+"Safe");}else{l3.setText(" Vis:  "+"Unsafe");}
+        temp.setText("Temp: "+(String) String.valueOf(newdata[0][hour]));
+        text.setText((String) (newdata[1][hour]));
+        wind_mph.setText("Wind: "+(String) String.valueOf(newdata[2][hour])+" mph");
+        humid.setText("Humid: "+(String) String.valueOf(newdata[3][hour])+"%");
+        precip.setText("Precip: "+(String) String.valueOf(newdata[4][hour])+"mm");
     }
 
 
@@ -386,9 +458,9 @@ public class HelloController {
         }
         if(!israin||rain<0.1){l1.setText("Rain: Clear");
             Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
-            g1.setImage(image);}else{if(rain<1){l1.setText("Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-            g1.setImage(image);}else{l1.setText("Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
-            g1.setImage(image);}}
+            g1.setImage(image);g2.setImage(image);}else{if(rain<1){l1.setText("Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+            g1.setImage(image);g2.setImage(image);}else{l1.setText("Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
+            g1.setImage(image);g2.setImage(image);}}
 
         in.setText("   "+ new Random());
         l2.setText("wind "+wind);
@@ -399,7 +471,7 @@ public class HelloController {
     @FXML
     private void initialize() {
         Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
-        g1.setImage(image);
+        g1.setImage(image);g2.setImage(image);
         current();
 
         Rectangle[0][0]=x11;
@@ -464,9 +536,26 @@ public class HelloController {
             }
         }
 
-
+        back.setVisible(false);
+        precip.setVisible(false);
+        g2.setVisible(false);
+        temp.setVisible(false);
+        text.setVisible(false);
+        wind_mph.setVisible(false);
+        humid.setVisible(false);
     }
 
+
+    @FXML
+    private void goback(){
+        back.setVisible(false);
+        precip.setVisible(false);
+        g2.setVisible(false);
+        temp.setVisible(false);
+        text.setVisible(false);
+        wind_mph.setVisible(false);
+        humid.setVisible(false);
+    }
 
     @FXML
     private Label welcomeText;
@@ -480,6 +569,13 @@ public class HelloController {
     private void more(){
 
         System.out.println("clicked");
+        back.setVisible(true);
+        precip.setVisible(true);
+        g2.setVisible(true);
+        temp.setVisible(true);
+        text.setVisible(true);
+        wind_mph.setVisible(true);
+        humid.setVisible(true);
     }
 
 }
