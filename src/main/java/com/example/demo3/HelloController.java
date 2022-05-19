@@ -28,7 +28,9 @@ public class HelloController {
     private static int currenthour=0;
     private static int[][] hourweather;// update by calling updatehourdata(), int[24][3], int[3][0] is rain at 3am, int[3][1] is wind,int[3][2] is vis
                                 // if 1 then unsafe/rain, if 0 then safe/no rain.
+    private static double[][] hourweather1;
 
+    private static boolean picture=false;
     @FXML
     private Label l1;
     @FXML
@@ -43,6 +45,14 @@ public class HelloController {
     private Label l31;
     @FXML
     private Label time;
+
+    @FXML
+    private Label selected;
+    @FXML
+    private Label vis11;
+    @FXML
+    private Label wind11;
+
     @FXML
     private ImageView g1;
     @FXML
@@ -102,6 +112,8 @@ public class HelloController {
     private void current(){
 
         try{
+            selected.setText("current");
+
             time.setText(String.valueOf(new Date().getHours()));
             c1.setVisible(true);
             c2.setVisible(true);
@@ -111,6 +123,7 @@ public class HelloController {
             l31.setVisible(true);
             currenthour=new Date().getHours();
             hour=currenthour;
+            updatehourdata();
             map=getMap();
             int vis=(Integer) ((Map)(map.get("current"))).get("visibility");
             double wind=Math.ceil((Double) ((Map)(map.get("current"))).get("wind_speed"));
@@ -130,6 +143,8 @@ public class HelloController {
             l2.setText(" Wind: "+wind1);
             l3.setText(" Vis:  "+vis1);
 
+            vis11.setText(String.valueOf(hourweather1[hour][2])+" km");
+            wind11.setText(String.valueOf(hourweather1[hour][1])+" kph");
 
             System.out.println(min.get(5).get("precipitation"));
             double five=Double.parseDouble(min.get(10).get("precipitation").toString()) ;
@@ -156,12 +171,14 @@ public class HelloController {
         Map toHour=forecastday.get(0);
         List<Map> hours=(List)toHour.get("hour");
         hourweather=new int[24][3];
+        hourweather1=new double[24][3];
         int i=0;
         for(Map one:hours){
             int rain= (int) one.get("will_it_rain");
 
             double vis1= (double) one.get("vis_km");
             double wind1=(double) one.get("wind_kph");
+            hourweather1[i][1]=wind1; hourweather1[i][2]=vis1;
 
             System.out.println("wind speed is "+wind1);
             System.out.println("visibility is "+vis1);
@@ -169,12 +186,14 @@ public class HelloController {
             int vis=vis1>5?0:1;
             int wind=wind1<20?0:1;
             hourweather[i][0]=rain; hourweather[i][1]=wind;hourweather[i][2]=vis;
+            i++;
         }
 
     }
 
     @FXML
     private void nexthour(){
+        selected.setText("selected");
         l11.setVisible(false);
         l21.setVisible(false);
         l31.setVisible(false);
@@ -187,17 +206,27 @@ public class HelloController {
         //time.setTextFill(Color.BLUEVIOLET);
         int rain=hourweather[hour][0];int wind=hourweather[hour][1];int vis=hourweather[hour][2];
         if(rain==0){l1.setText(" Rain: Clear");
-            Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");g1.setImage(image);}else{
+            Image image;
+            if(picture){
+                image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+            }else{
+                image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\4.jpg");
+            }
+            picture=!picture;
+            g1.setImage(image);}else{
             l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
             g1.setImage(image);
 
         }
+        vis11.setText(String.valueOf(hourweather1[hour][2])+" km");
+        wind11.setText(String.valueOf(hourweather1[hour][1])+" kph");
         if(wind==0){l2.setText(" Wind: "+"Safe");
             }else{l2.setText(" Wind: "+"Unsafe");}
         if(vis==0){l3.setText(" Vis:  "+"Safe");}else{l3.setText(" Vis:  "+"Unsafe");}
     }
     @FXML
     private void previoushour(){
+        selected.setText("selected");
         l11.setVisible(false);
         l21.setVisible(false);
         l31.setVisible(false);
@@ -210,11 +239,22 @@ public class HelloController {
         //time.setTextFill(Color.BLUEVIOLET);
         int rain=hourweather[hour][0];int wind=hourweather[hour][1];int vis=hourweather[hour][2];
         if(rain==0){l1.setText(" Rain: Clear");
-            Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");g1.setImage(image);}else{
+            Image image;
+            if(picture){
+                image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+            }else{
+                image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\4.jpg");
+            }
+            picture=!picture;
+
+
+            g1.setImage(image);}else{
             l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
             g1.setImage(image);
 
         }
+        vis11.setText(String.valueOf(hourweather1[hour][2])+" km");
+        wind11.setText(String.valueOf(hourweather1[hour][1])+" kph");
         if(wind==0){l2.setText(" Wind: "+"Safe");
         }else{l2.setText(" Wind: "+"Unsafe");}
         if(vis==0){l3.setText(" Vis:  "+"Safe");}else{l3.setText(" Vis:  "+"Unsafe");}
