@@ -7,7 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.imageio.ImageIO;
@@ -31,6 +33,102 @@ public class HelloController {
     private static double[][] hourweather1;
 
     private static boolean picture=false;
+
+    private static Rectangle[][] Rectangle=new Rectangle[3][15];
+
+    @FXML
+    private Rectangle x11;
+    @FXML
+    private Rectangle x12;
+    @FXML
+    private Rectangle x13;
+    @FXML
+    private Rectangle x14;
+    @FXML
+    private Rectangle x15;
+    @FXML
+    private Rectangle x16;
+    @FXML
+    private Rectangle x17;
+    @FXML
+    private Rectangle x18;
+    @FXML
+    private Rectangle x19;
+    @FXML
+    private Rectangle x20;
+    @FXML
+    private Rectangle x21;
+    @FXML
+    private Rectangle x22;
+    @FXML
+    private Rectangle x23;
+    @FXML
+    private Rectangle x24;
+    @FXML
+    private Rectangle x25;
+    @FXML
+    private Rectangle y11;
+    @FXML
+    private Rectangle y12;
+    @FXML
+    private Rectangle y13;
+    @FXML
+    private Rectangle y14;
+    @FXML
+    private Rectangle y15;
+    @FXML
+    private Rectangle y16;
+    @FXML
+    private Rectangle y17;
+    @FXML
+    private Rectangle y18;
+    @FXML
+    private Rectangle y19;
+    @FXML
+    private Rectangle y20;
+    @FXML
+    private Rectangle y21;
+    @FXML
+    private Rectangle y22;
+    @FXML
+    private Rectangle y23;
+    @FXML
+    private Rectangle y24;
+    @FXML
+    private Rectangle y25;
+    @FXML
+    private Rectangle z11;
+    @FXML
+    private Rectangle z12;
+    @FXML
+    private Rectangle z13;
+    @FXML
+    private Rectangle z14;
+    @FXML
+    private Rectangle z15;
+    @FXML
+    private Rectangle z16;
+    @FXML
+    private Rectangle z17;
+    @FXML
+    private Rectangle z18;
+    @FXML
+    private Rectangle z19;
+    @FXML
+    private Rectangle z20;
+    @FXML
+    private Rectangle z21;
+    @FXML
+    private Rectangle z22;
+    @FXML
+    private Rectangle z23;
+    @FXML
+    private Rectangle z24;
+    @FXML
+    private Rectangle z25;
+
+
+
     @FXML
     private Label l1;
     @FXML
@@ -132,6 +230,7 @@ public class HelloController {
             List<Map> min= (List<Map>) (map.get("minutely"));
             double rain=Double.parseDouble(min.get(0).get("precipitation").toString()) ;
             if(rain<0.1){l1.setText(" Rain: Clear");
+                //Image image1=new Image(String.valueOf(getClass().getResource("images\\1.jpg")));
                 Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
                 g1.setImage(image);}else{if(rain<1){l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
                 g1.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
@@ -183,8 +282,8 @@ public class HelloController {
             System.out.println("wind speed is "+wind1);
             System.out.println("visibility is "+vis1);
 
-            int vis=vis1>5?0:1;
-            int wind=wind1<20?0:1;
+            int vis=vis1>9.9?0:1;
+            int wind=wind1<18?0:1;
             hourweather[i][0]=rain; hourweather[i][1]=wind;hourweather[i][2]=vis;
             i++;
         }
@@ -260,6 +359,9 @@ public class HelloController {
         if(vis==0){l3.setText(" Vis:  "+"Safe");}else{l3.setText(" Vis:  "+"Unsafe");}
     }
 
+
+
+
     @FXML
     private void changetime(){  //not used
         CharSequence a=in.getCharacters();
@@ -300,6 +402,69 @@ public class HelloController {
         g1.setImage(image);
         current();
 
+        Rectangle[0][0]=x11;
+        Rectangle[0][1]=x12;
+        Rectangle[0][2]=x13;
+        Rectangle[0][3]=x14;
+        Rectangle[0][4]=x15;
+        Rectangle[0][5]=x16;
+        Rectangle[0][6]=x17;
+        Rectangle[0][7]=x18;
+        Rectangle[0][8]=x19;
+        Rectangle[0][9]=x20;
+        Rectangle[0][10]=x21;
+        Rectangle[0][11]=x22;
+        Rectangle[0][12]=x23;
+        Rectangle[0][13]=x24;
+        Rectangle[0][14]=x25;
+
+        Rectangle[1][0]=y11;
+        Rectangle[1][1]=y12;
+        Rectangle[1][2]=y13;
+        Rectangle[1][3]=y14;
+        Rectangle[1][4]=y15;
+        Rectangle[1][5]=y16;
+        Rectangle[1][6]=y17;
+        Rectangle[1][7]=y18;
+        Rectangle[1][8]=y19;
+        Rectangle[1][9]=y20;
+        Rectangle[1][10]=y21;
+        Rectangle[1][11]=y22;
+        Rectangle[1][12]=y23;
+        Rectangle[1][13]=y24;
+        Rectangle[1][14]=y25;
+
+        Rectangle[2][0]=z11;
+        Rectangle[2][1]=z12;
+        Rectangle[2][2]=z13;
+        Rectangle[2][3]=z14;
+        Rectangle[2][4]=z15;
+        Rectangle[2][5]=z16;
+        Rectangle[2][6]=z17;
+        Rectangle[2][7]=z18;
+        Rectangle[2][8]=z19;
+        Rectangle[2][9]=z20;
+        Rectangle[2][10]=z21;
+        Rectangle[2][11]=z22;
+        Rectangle[2][12]=z23;
+        Rectangle[2][13]=z24;
+        Rectangle[2][14]=z25;
+
+        updatehourdata();
+
+        for(int i=0;i<3;i++){
+            for(int j=7;j<=21;j++){
+
+                if(hourweather[j][i]==1){
+                    Rectangle[i][j-7].setFill(Paint.valueOf("#f4d5d5"));
+                    Rectangle[i][j-7].setAccessibleText(String.valueOf(j));
+                }else{Rectangle[i][j-7].setFill(Color.TRANSPARENT);
+
+                }
+            }
+        }
+
+
     }
 
 
@@ -308,6 +473,13 @@ public class HelloController {
     @FXML
     protected void onHelloButtonClick() {
 
-
     }
+
+
+    @FXML
+    private void more(){
+
+        System.out.println("clicked");
+    }
+
 }
