@@ -433,7 +433,7 @@ public class HelloController {
 
 
 
-
+    /*
     @FXML
     private void changetime(){  //not used
         CharSequence a=in.getCharacters();
@@ -466,7 +466,7 @@ public class HelloController {
         l2.setText("wind "+wind);
         l3.setText("vis "+vis);
     }}
-
+    */
 
     @FXML
     private void initialize() {
