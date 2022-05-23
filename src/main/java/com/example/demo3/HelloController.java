@@ -248,9 +248,10 @@ public class HelloController {
             double rain=hourweather1[currenthour][0];//Double.parseDouble(min.get(0).get("precipitation").toString()) ;
             if(rain<0.1){l1.setText(" Rain: Clear");
                 //Image image1=new Image(String.valueOf(getClass().getResource("images\\1.jpg")));
-                Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
-                g1.setImage(image);g2.setImage(image);}else{if(rain<1){l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
-                g1.setImage(image);g2.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
+                Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\1.jpg"));
+                //Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+                g1.setImage(image);g2.setImage(image);}else{if(rain<1){l1.setText(" Rain: Mild");Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\2.jpg"));
+                g1.setImage(image);g2.setImage(image);}else{l1.setText(" Rain: Downpour");Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\3.png"));
                 g1.setImage(image);g2.setImage(image);}}
             //out.setText("id "+id);
             //in.setText("   "+ new Random());
@@ -271,7 +272,8 @@ public class HelloController {
             if(ten<0.1){c2.setFill(Color.LIGHTGREEN);}else{if(ten<1)c2.setFill(Color.YELLOW);else{c2.setFill(Color.RED);}}
             if(thirty<0.1){c3.setFill(Color.LIGHTGREEN);}else{if(thirty<1)c3.setFill(Color.YELLOW);else{c3.setFill(Color.RED);}}
 
-            Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+            //Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+            Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\1.jpg"));
             //g2.setImage(image);
             //g2.setVisible(false);
 
@@ -348,22 +350,26 @@ public class HelloController {
         if(rain==0){l1.setText(" Rain: Clear");
             Image image;
             if(picture){
-                image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+                image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\1.jpg"));
+                //image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
             }else{
-                image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\4.jpg");
+                image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\1.jpg"));
+                //image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\4.jpg");
             }
             picture=!picture;
             g1.setImage(image);g2.setImage(image);}else {
 
             if (rain == 1) {
                 l1.setText(" Rain: Mild");
-                Image image = new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+                Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\2.jpg"));
+                //Image image = new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
                 g1.setImage(image);
                 g2.setImage(image);
                 ;
             } else {
                 l1.setText(" Rain: Heavy");
-                Image image = new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
+                Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\3.png"));
+                //Image image = new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
                 g1.setImage(image);
                 g2.setImage(image);
             }
@@ -401,18 +407,20 @@ public class HelloController {
         if(rain==0){l1.setText(" Rain: Clear");
             Image image;
             if(picture){
-                image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+                image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\1.jpg"));
+                //image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
             }else{
-                image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\4.jpg");
+                image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\1.jpg"));
+                //image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\4.jpg");
             }
             picture=!picture;
             g1.setImage(image);g2.setImage(image);}else{
 
             if(rain==1){
-                l1.setText(" Rain: Mild");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\2.jpg");
+                l1.setText(" Rain: Mild");Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\2.jpg"));
                 g1.setImage(image);g2.setImage(image);
             }else{
-                l1.setText(" Rain: Heavy");Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\3.png");
+                l1.setText(" Rain: Heavy");Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\3.png"));
                 g1.setImage(image);g2.setImage(image);
             }
 
@@ -470,9 +478,11 @@ public class HelloController {
 
     @FXML
     private void initialize() {
-        Image image=new Image("C:\\Users\\86189\\Desktop\\demo3\\src\\main\\resources\\images\\1.jpg");
+        //Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\1.jpg"));
+        Image image=new Image(String.valueOf(System.getProperty("user.dir")+"\\src\\main\\resources\\images\\1.jpg"));
         g1.setImage(image);g2.setImage(image);
         current();
+
 
         Rectangle[0][0]=x11;
         Rectangle[0][1]=x12;
