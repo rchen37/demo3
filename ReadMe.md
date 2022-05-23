@@ -1,1 +1,1 @@
-Please change the directory to image in "initialize()", "current()" in HelloController.
+Library: org.codehaus.jackson 19 is needed. Javafx 17 is needed.
