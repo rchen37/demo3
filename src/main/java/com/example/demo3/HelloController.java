@@ -312,7 +312,7 @@ public class HelloController {
             System.out.println("visibility is "+vis1);
             int rain=(rain1<0.1?0:(rain1<5?1:2));
             int vis=vis1>5?0:1;
-            int wind=wind1<18?0:1;
+            int wind=wind1<30?0:1;
             hourweather[i][0]=rain; hourweather[i][1]=wind;hourweather[i][2]=vis;
 
 

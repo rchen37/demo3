@@ -1,1 +1,2 @@
-Library: org.codehaus.jackson 19 is needed. Javafx 17 is needed.
+Library: org.codehaus.jackson 19 is needed.
+When compiling and running a JavaFX application, you may need to [add JavaFX modules][https://openjfx.io/openjfx-docs/#install-javafx] to the “Module Path”. This can be done inside your IDE (Eclipse, IntelliJ, …) or on the command line.
